@@ -20,6 +20,10 @@ from tokenizers import Tokenizer
 MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 REVISION = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
 DIMENSIONS = 384
+STOPWORDS = frozenset(
+    "a an and are as at be been by did do does for from has have how in is it of on or "
+    "the their this to was were what when where which who will with".split()
+)
 
 
 class Encoder:
@@ -157,12 +161,14 @@ class Index:
         lexical = []
         semantic = []
         if method != "semantic":
-            words = list(dict.fromkeys(re.findall(r"[^\W_]+", query.casefold())))[:24]
+            tokens = list(dict.fromkeys(re.findall(r"[^\W_]+", query.casefold())))
+            words = ([token for token in tokens if token not in STOPWORDS] or tokens)[:24]
             if words:
                 expression = " OR ".join(f'"{word}"' for word in words)
                 lexical = [
                     row[0] for row in db.execute(
-                        "SELECT rowid FROM lexical WHERE lexical MATCH ? ORDER BY bm25(lexical, 3, 1) LIMIT ?",
+                        "SELECT rowid FROM lexical WHERE lexical MATCH ? "
+                        "AND rank MATCH 'bm25(3,1)' ORDER BY rank LIMIT ?",
                         (expression, candidates),
                     )
                 ]
