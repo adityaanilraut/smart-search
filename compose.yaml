@@ -1,8 +1,8 @@
 x-search: &search
-  build: .
+  image: smart-search:demo
   environment:
     INDEX_DIR: /index
-    SOURCE_FILE: /data/sample.jsonl
+    SOURCE_FILE: ${SOURCE_FILE:-/data/sample.jsonl}
     REDIS_URL: redis://redis:6379
     OLLAMA_URL: ${OLLAMA_URL:-}
   volumes:
@@ -14,7 +14,8 @@ services:
     image: redis:7.4-alpine
   index:
     <<: *search
-    command: ["python", "-m", "smart_search", "/data/sample.jsonl"]
+    build: .
+    command: ["sh", "-ec", "exec python -m smart_search \"$$SOURCE_FILE\""]
   api:
     <<: *search
     ports: ["127.0.0.1:8000:8000"]

@@ -31,7 +31,7 @@ Query → SQLite FTS5 BM25 ──────┐
 
 MiniLM encodes each title and abstract up to 256 tokens. FAISS indexes the normalized 384-dimensional vectors, and hybrid retrieval combines the top 50 candidates from each method. Redis cache keys include the index generation. A cache outage falls back to retrieval.
 
-The Compose worker rebuilds the index every night at 02:00 UTC. It validates a new generation before atomically updating the active pointer. The API keeps serving the prior index during a rebuild. Earlier generations remain on disk for rollback. Stop the stack before pruning generations and keep the directory named in `CURRENT`.
+The Compose worker rebuilds the index every night at 02:00 UTC. To use your own corpus, put it under `data/` and start with `SOURCE_FILE=/data/your-corpus.jsonl make demo`. The worker validates a new generation before atomically updating the active pointer. The API keeps serving the prior index during a rebuild. Earlier generations remain on disk for rollback. Stop the stack before pruning generations and keep the directory named in `CURRENT`.
 
 ## Verification
 

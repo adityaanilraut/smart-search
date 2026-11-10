@@ -1,6 +1,7 @@
 .PHONY: demo test bench corpus
 demo:
-	docker compose up --build -d --wait
+	docker compose build index
+	docker compose up --no-build -d --wait
 
 test:
 	uv run --locked pytest -q
