@@ -1,0 +1,22 @@
+[project]
+name = "smart-search"
+version = "0.1.0"
+description = "Hybrid document retrieval and source-linked answers"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "redis>=5,<8",
+  "httpx>=0.28,<1", "faiss-cpu>=1.10,<2", "numpy>=1.26,<3",
+  "onnxruntime>=1.20,<2", "tokenizers>=0.21,<1", "huggingface-hub>=0.30,<2",
+]
+
+[project.optional-dependencies]
+apple = [
+    "mlx>=0.25,<1 ; platform_machine == 'arm64' and sys_platform == 'darwin'",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

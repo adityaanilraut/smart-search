@@ -1,0 +1,36 @@
+x-search: &search
+  build: .
+  environment:
+    INDEX_DIR: /index
+    SOURCE_FILE: /data/sample.jsonl
+    REDIS_URL: redis://redis:6379
+    OLLAMA_URL: ${OLLAMA_URL:-}
+  volumes:
+    - index:/index
+    - models:/models
+    - ./data:/data:ro
+services:
+  redis:
+    image: redis:7.4-alpine
+  index:
+    <<: *search
+    command: ["python", "-m", "smart_search", "/data/sample.jsonl"]
+  api:
+    <<: *search
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      index: {condition: service_completed_successfully}
+      redis: {condition: service_started}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  reindex:
+    <<: *search
+    command: ["python", "-m", "smart_search.scheduler"]
+    depends_on:
+      index: {condition: service_completed_successfully}
+volumes:
+  index:
+  models:

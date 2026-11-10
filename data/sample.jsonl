@@ -1,0 +1,4 @@
+{"id":"raft","title":"In Search of an Understandable Consensus Algorithm","text":"Raft is a consensus algorithm for managing a replicated log. Leader election, log replication, and safety can be considered separately.","url":"https://raft.github.io/raft.pdf"}
+{"id":"fts","title":"SQLite FTS5 Extension","text":"SQLite FTS5 is a virtual table module that provides full-text search functionality and BM25 ranking.","url":"https://sqlite.org/fts5.html"}
+{"id":"faiss","title":"Faiss documentation","text":"Faiss is a library for efficient similarity search and clustering of dense vectors.","url":"https://faiss.ai/"}
+{"id":"yjs","title":"Yjs document updates","text":"Document updates are binary encoded and commutative, associative, and idempotent. Peers can exchange missing edits using state vectors.","url":"https://docs.yjs.dev/api/document-updates"}
