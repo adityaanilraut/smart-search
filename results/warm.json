@@ -1,0 +1,19 @@
+{
+  "tested_commit": "51d30684ae914b7582282777ba87557df45c538c",
+  "environment": "macOS-27.2-arm64-arm-64bit",
+  "python": "3.12.14",
+  "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "corpus": "trec-covid",
+  "timestamp_utc": "2026-11-10T08:23:26.911735+00:00",
+  "mode": "warm",
+  "target_qps": 50,
+  "seconds": 30,
+  "requests": 1500,
+  "successes": 1500,
+  "errors": {},
+  "achieved_qps": 50.027582359006175,
+  "p95_ms": 9.116499997617211,
+  "cache_hits": 1500,
+  "generation": "f730f8be58454ebbbb419382899106f8",
+  "documents": 171332
+}

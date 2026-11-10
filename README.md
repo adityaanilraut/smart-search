@@ -4,7 +4,7 @@ A hybrid document search service that combines SQLite FTS5 BM25 and FAISS vector
 
 ## Quick start
 
-With Docker and Docker Compose running:
+Start the demo with Docker and Docker Compose running.
 
 ```sh
 make demo

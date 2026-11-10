@@ -1,0 +1,34 @@
+{
+  "tested_commit": "51d30684ae914b7582282777ba87557df45c538c",
+  "environment": "macOS-27.2-arm64-arm-64bit",
+  "python": "3.12.14",
+  "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "corpus": "trec-covid",
+  "timestamp_utc": "2026-11-10T08:22:23.103255+00:00",
+  "mode": "quality",
+  "generation": "f730f8be58454ebbbb419382899106f8",
+  "documents": 171332,
+  "ranking": [
+    {
+      "method": "bm25",
+      "queries": 50,
+      "hits_at_5": 49,
+      "hit_at_5": 0.98,
+      "ndcg_at_10": 0.6042874281711702
+    },
+    {
+      "method": "semantic",
+      "queries": 50,
+      "hits_at_5": 43,
+      "hit_at_5": 0.86,
+      "ndcg_at_10": 0.45353811518278236
+    },
+    {
+      "method": "hybrid",
+      "queries": 50,
+      "hits_at_5": 50,
+      "hit_at_5": 1,
+      "ndcg_at_10": 0.6155950280052419
+    }
+  ]
+}
