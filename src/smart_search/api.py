@@ -3,7 +3,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from threading import Lock
+from threading import BoundedSemaphore, Lock
 from typing import Annotated, Literal
 
 from fastapi import FastAPI, HTTPException, Query
@@ -21,6 +21,8 @@ class SearchService:
         self.cache = cache
         self.current = None
         self.lock = Lock()
+        # Keep native search work bounded under a burst of FastAPI workers.
+        self.search_slots = BoundedSemaphore(4)
 
     def index(self):
         with self.lock:
@@ -46,7 +48,8 @@ class SearchService:
                     return {"generation": index.generation, "cached": True, "results": json.loads(hit)}
             except redis.RedisError:
                 pass
-        results = index.search(query, k, method)
+        with self.search_slots:
+            results = index.search(query, k, method)
         if self.cache:
             try:
                 self.cache.setex(key, 600, json.dumps(results))
@@ -97,7 +100,7 @@ def create_app(service=None, ollama_url=None, model="qwen2.5:1.5b"):
             cache = redis.Redis.from_url(url, socket_connect_timeout=0.1, socket_timeout=0.1)
         try:
             app.state.service = service or SearchService(
-                Path(os.getenv("INDEX_DIR", "index")), Encoder(), cache,
+                Path(os.getenv("INDEX_DIR", "index")), Encoder(1), cache,
             )
             yield
         finally:

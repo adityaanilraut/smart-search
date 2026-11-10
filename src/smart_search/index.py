@@ -168,7 +168,7 @@ class Index:
                 lexical = [
                     row[0] for row in db.execute(
                         "SELECT rowid FROM lexical WHERE lexical MATCH ? "
-                        "AND rank MATCH 'bm25(3,1)' ORDER BY rank LIMIT ?",
+                        "ORDER BY bm25(lexical, 3, 1) LIMIT ?",
                         (expression, candidates),
                     )
                 ]
