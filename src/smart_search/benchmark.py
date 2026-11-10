@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import csv
+from datetime import UTC, datetime
 import json
 import math
 from pathlib import Path
@@ -11,7 +12,7 @@ import time
 
 import httpx
 
-from .index import Encoder, Index
+from .index import REVISION, Encoder, Index
 
 
 def revision():
@@ -113,6 +114,8 @@ def main():
         ))
     report = {
         "tested_commit": revision(), "environment": platform.platform(),
+        "python": platform.python_version(), "model_revision": REVISION,
+        "corpus": args.corpus.name, "timestamp_utc": datetime.now(UTC).isoformat(),
         "mode": args.mode, **data,
     }
     target = Path("results") / f"{args.mode}.json"
